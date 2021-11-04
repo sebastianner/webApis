@@ -4,8 +4,7 @@ import ReqResponse from "../interfaces/ReqResponse";
 const success = (
   req: Request,
   res: Response,
-  next: NextFunction,
-  data: ReqResponse,
+  data: ReqResponse | string,
   status: number = 200
 ): void => {
   const statusText: any = httpStatus.getStatusText(status);
@@ -20,13 +19,12 @@ const success = (
 const error = (
   req: Request,
   res: Response,
-  next: NextFunction,
   error: unknown,
-  status: number = 200
+  message: string,
+  status: number = 500
 ): void => {
-  const statusText: any = httpStatus.getStatusText(status);
   res.status(status).send({
-    error: error,
+    error: message,
     status,
     body: false,
   });

@@ -1,25 +1,22 @@
-// import express, { Request, Response, NextFunction } from "express";
-// import controller from "./controller";
-// import response from "../../../network/response";
+import express, { Request, Response, NextFunction, Application } from "express";
+import Controller from "./controller";
+import response from "../../../network/response";
+const router = express.Router();
+const controller = new Controller();
 
-// const router = express.Router();
-// router.post("/login", login);
+router.post("/v1/login", login);
 
-// async function login(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ): Promise<void> {
-//   try {
-//     const token = await controller.login(
-//       req.body.email,
-//       req.body.username,
-//       req.body.password
-//     );
-//     response.success(req, res, next, token, 200);
-//   } catch (error: unknown) {
-//     response.error(req, res, next, error, 500);
-//   }
-// }
+async function login(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const token = await controller.login(req.body.username, req.body.password);
+    response.success(req, res, token, 200);
+  } catch (error: unknown) {
+    next(error);
+  }
+}
 
-// export default router;
+export default router;

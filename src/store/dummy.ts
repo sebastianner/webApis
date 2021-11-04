@@ -21,8 +21,13 @@ async function list(table: string): Promise<any> {
   return db[table];
 }
 
-async function insert(table: string, user: any) {
+async function insert(table: string, user: any): Promise<any> {
   return db[table].push(user);
 }
 
-export default { list, insert };
+async function query(table: string, query: any): Promise<any> {
+  let col = await list(table);
+  return col.filter((e: any) => e[0] === query[0])[0];
+}
+
+export default { list, insert, query };

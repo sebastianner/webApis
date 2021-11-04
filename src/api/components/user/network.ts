@@ -1,11 +1,14 @@
 import express, { Request, Response, NextFunction } from "express";
 import response from "../../../network/response";
-import controller from "./controller";
+import Controller from "./controller";
 import ReqResponse from "../../../interfaces/ReqResponse";
+import userSchemas from "../../../schemas/user.schema";
+import validator from "../../../middlewares/schema.validator";
 const router = express.Router();
+const controller = new Controller();
 
 router.get("/:table", list);
-router.post("/", insert);
+router.post("/", validator(userSchemas.createUserSchema, "body"), insert);
 
 async function list(
   req: Request,
@@ -14,10 +17,9 @@ async function list(
 ): Promise<void> {
   try {
     const list: ReqResponse = await controller.list(req.params.table);
-    response.success(req, res, next, list, 200);
+    response.success(req, res, list, 200);
   } catch (error: unknown) {
-    console.log(error);
-    response.error(req, res, next, error, 500);
+    next(error);
   }
 }
 
@@ -29,9 +31,9 @@ async function insert(
   try {
     const insert: ReqResponse = await controller.insert(req.body);
     console.log(insert);
-    response.success(req, res, next, insert, 200);
-  } catch (error) {
-    return response.error(req, res, next, error, 500);
+    response.success(req, res, insert, 200);
+  } catch (error: unknown) {
+    next(error);
   }
 }
 
