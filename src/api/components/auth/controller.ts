@@ -1,4 +1,4 @@
-import store from "../../../store/dummy";
+import store from "../../../store/mysql";
 import token from "../../../token/index";
 import bcrypt from "bcrypt";
 import Auth from "../../../interfaces/Auth";
@@ -37,7 +37,7 @@ class Controller {
     }
   }
 
-  async insert(body: Auth): Promise<ReqResponse> {
+  async insert(body: Auth): Promise<unknown> {
     const authData = {
       user_id: body.user_id,
       username: body.username,

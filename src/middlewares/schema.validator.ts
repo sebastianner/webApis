@@ -9,9 +9,10 @@ function validatorHandler(schema: Schema, property: any) {
       abortEarly: true,
     });
     if (error) {
-      next(boom.badRequest(error.message));
+      next(boom.badRequest(error.message, error));
+    } else {
+      next();
     }
-    next();
   };
 }
 

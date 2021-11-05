@@ -5,6 +5,7 @@ const db: any = {
       name: "sebastian",
       username: "sebastian123",
       email: "sebastian123@gmail.com",
+      role: "user",
     },
   ],
   auth: [

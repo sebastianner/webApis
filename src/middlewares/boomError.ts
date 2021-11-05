@@ -13,12 +13,13 @@ function boomErrorHandler(
     response.error(
       req,
       res,
-      output.payload.message,
+      error.data,
       output.payload.error,
       output.payload.statusCode
     );
+  } else {
+    next(error);
   }
-  next(error);
 }
 
 export default boomErrorHandler;

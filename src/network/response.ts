@@ -1,10 +1,11 @@
 import express, { Request, Response, NextFunction } from "express";
 import httpStatus, { StatusCodes } from "http-status-codes";
+import { ValidationResult } from "joi";
 import ReqResponse from "../interfaces/ReqResponse";
 const success = (
   req: Request,
   res: Response,
-  data: ReqResponse | string,
+  data: ReqResponse | unknown,
   status: number = 200
 ): void => {
   const statusText: any = httpStatus.getStatusText(status);
@@ -19,12 +20,13 @@ const success = (
 const error = (
   req: Request,
   res: Response,
-  error: unknown,
-  message: string,
+  message: unknown,
+  error: string,
   status: number = 500
 ): void => {
+  console.log(message);
   res.status(status).send({
-    error: message,
+    error,
     status,
     body: false,
   });

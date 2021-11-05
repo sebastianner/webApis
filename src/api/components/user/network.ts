@@ -29,8 +29,7 @@ async function insert(
   next: NextFunction
 ): Promise<void> {
   try {
-    const insert: ReqResponse = await controller.insert(req.body);
-    console.log(insert);
+    const insert: unknown = await controller.insert(req.body);
     response.success(req, res, insert, 200);
   } catch (error: unknown) {
     next(error);
