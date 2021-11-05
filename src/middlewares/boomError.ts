@@ -13,7 +13,7 @@ function boomErrorHandler(
     response.error(
       req,
       res,
-      error.data,
+      error.data || error.message,
       output.payload.error,
       output.payload.statusCode
     );

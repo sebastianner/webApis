@@ -25,6 +25,7 @@ const error = (
   status: number = 500
 ): void => {
   console.log(message);
+
   res.status(status).send({
     error,
     status,

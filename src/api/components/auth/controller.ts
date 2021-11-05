@@ -2,7 +2,7 @@ import store from "../../../store/mysql";
 import token from "../../../token/index";
 import bcrypt from "bcrypt";
 import Auth from "../../../interfaces/Auth";
-import ReqResponse from "../../../interfaces/ReqResponse";
+import boom from "@hapi/boom";
 const TABLE = "auth";
 
 // async function update(data: data) {
@@ -23,14 +23,29 @@ const TABLE = "auth";
 // }
 
 class Controller {
-  constructor() {}
-  async login(username: string, password: string) {
-    const query: any = { username: username };
+  async login(
+    password: string,
+    username?: string | undefined,
+    email?: string | undefined
+  ) {
+    let query: any;
+
+    if (username === undefined && email === undefined) {
+      throw boom.badRequest("username or email required to login");
+    }
+    if (username) {
+      query = { username: username };
+    }
+    if (email) {
+      query = { email: email };
+    }
+
     const data: any = await store.query(TABLE, query);
     console.log(data);
+
     const compare: boolean = await bcrypt.compare(password, data.password);
-    console.log(compare);
     if (compare) {
+      console.log(data);
       return token.sign(data);
     } else {
       throw new Error("Invalid information");
